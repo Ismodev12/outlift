@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Outlet en Live</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root{
+    --bg: #eceae2;
+    --field-bg: #ffffff;
+    --text: #1b1b2b;
+    --muted: #9a9a9a;
+    --placeholder: #b4b4b4;
+    --brown: #96835e;
+    --shadow: 0 2px 10px rgba(0,0,0,0.05);
+    --radius: 14px;
+  }
+
+  html{ -webkit-text-size-adjust:100%; }
+
+  body{
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 36px 20px 80px;
+  }
+
+  .wrap{ max-width: 1180px; margin: 0 auto; }
+
+  .hidden-field{
+    position:absolute !important;
+    left:-9999px;
+    width:1px; height:1px;
+    overflow:hidden;
+  }
+
+  /* ---------- Logo ---------- */
+  .logo{ text-align: center; margin-bottom: 34px; }
+  .logo .mark{
+    font-family: 'Dancing Script', cursive;
+    font-size: 72px;
+    font-weight: 700;
+    color: #0c0c0c;
+    line-height: 1;
+    position: relative;
+    display: inline-block;
+    letter-spacing: 1px;
+  }
+  .logo .sub{
+    display:block;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 6px;
+    margin-top: -6px;
+    margin-left: 40px;
+  }
+  .logo .sub .dot{ color:#ff4500; }
+
+  /* ---------- Layout ---------- */
+  .grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 44px;
+    align-items: start;
+  }
+  .col-left{ max-width: 540px; }
+
+  /* ---------- Headings ---------- */
+  h2.section{
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0 0 20px;
+    letter-spacing: .3px;
+  }
+  .section-gap{ margin-top: 40px; }
+
+  /* ---------- Fields ---------- */
+  .field{
+    width: 100%;
+    background: var(--field-bg);
+    border: none;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px 22px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    margin-bottom: 16px;
+    outline: none;
+    transition: box-shadow .15s ease;
+  }
+  .field::placeholder{ color: var(--placeholder); }
+  .field:focus{ box-shadow: 0 0 0 2px rgba(0,0,0,0.12), var(--shadow); }
+
+  .field-wrap{ position: relative; }
+  .field-wrap .suffix{
+    position:absolute;
+    right: 22px; top: 50%;
+    transform: translateY(-50%);
+    margin-top: -8px;
+    color: var(--text);
+    font-size: 15px;
+    pointer-events:none;
+  }
+
+  .row2{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* Country select */
+  .select-wrap{ position: relative; margin-bottom: 16px; }
+  .select-wrap label{
+    position:absolute; top: 9px; left: 22px;
+    font-size: 11px; color: var(--muted);
+  }
+  select.field{
+    appearance:none; -webkit-appearance:none;
+    padding-top: 26px; padding-bottom: 12px;
+    margin-bottom: 0; cursor: pointer;
+    color:#1a2a6c;
+  }
+  .select-wrap .chev{
+    position:absolute; right: 22px; top: 50%;
+    transform: translateY(-50%); pointer-events:none; color:#555;
+  }
+
+  /* ---------- Option cards ---------- */
+  .opt-card{
+    background: var(--field-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px 24px;
+  }
+  .opt-head{ display:flex; align-items:center; justify-content: space-between; }
+  .opt-left{ display:flex; align-items:center; gap: 14px; }
+  .opt-title{ font-weight: 700; font-size: 17px; }
+  .opt-right{ font-weight: 700; font-size: 16px; }
+  .opt-desc{
+    color: var(--brown);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 14px;
+    padding-left: 34px;
+  }
+  .opt-desc + .opt-desc{ margin-top: 10px; }
+
+  /* Radio */
+  .radio{
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 2px solid #111;
+    display:inline-flex; align-items:center; justify-content:center;
+    flex: 0 0 auto; cursor: pointer;
+  }
+  .radio.checked::after{
+    content:""; width: 10px; height: 10px;
+    border-radius:50%; background:#111;
+  }
+
+  /* payment method */
+  .intro-row{ display:flex; align-items:center; gap: 14px; margin-bottom: 16px; }
+  .intro-row .label{ font-weight:700; font-size:17px; }
+  .cards-ico{ display:flex; gap:4px; }
+  .cards-ico img{ height: 22px; border-radius:3px; }
+
+  .card-secure{
+    width:100%;
+    background:#fffbe6;
+    border:1px solid #f3e39a;
+    border-radius: 10px;
+    height: 30px;
+    margin-bottom: 16px;
+  }
+
+  /* terms */
+  .terms{
+    display:flex; align-items:flex-start; gap: 10px;
+    margin-top: 24px; font-size: 14px; line-height: 1.45;
+  }
+  .terms input{
+    width: 18px; height: 18px; accent-color:#111;
+    margin-top: 2px; flex: 0 0 auto;
+  }
+
+  /* footer links */
+  .foot-links{ margin-top: 28px; font-size: 14px; line-height: 1.9; }
+  .foot-links a{ color: var(--text); text-decoration:none; }
+  .foot-links a:hover{ text-decoration: underline; }
+  .foot-links .sep{ margin: 0 10px; }
+  .foot-note{ margin-top: 18px; font-size: 14px; color: var(--text); line-height: 1.5; }
+
+  /* ---------- Right column ---------- */
+  .top-btn-wrap{ display:flex; justify-content:flex-end; margin-bottom: 20px; }
+  .btn-dist{
+    background:#0c0c0c; color:#fff; border:none; border-radius: 10px;
+    padding: 14px 22px; font-family:'Poppins',sans-serif;
+    font-weight:700; font-size: 12px; letter-spacing:.5px; cursor:pointer;
+  }
+
+  .summary{
+    background:#fff; border-radius: 16px; box-shadow: var(--shadow);
+    padding: 28px 30px;
+  }
+  .summary h3{ font-size: 23px; font-weight: 800; margin-bottom: 18px; }
+  .sum-row{ display:flex; justify-content:space-between; padding: 11px 0; font-size: 15px; }
+  .sum-row.total{ border-top: 1px solid #ececec; font-weight:700; margin-top: 4px; padding-top: 16px; }
+
+  .btn-confirm{
+    width:100%; margin-top: 22px;
+    background:#6f6f63; color:#fff; border:none; border-radius: 12px;
+    padding: 20px; font-family:'Poppins',sans-serif;
+    font-weight:700; font-size: 15px; letter-spacing:.5px;
+    cursor:pointer; transition: background .15s ease;
+  }
+  .btn-confirm:hover{ background:#5d5d52; }
+  .btn-confirm:disabled{ opacity:.7; cursor:default; }
+
+  .form-msg{ margin-top: 14px; font-size: 14px; text-align:center; display:none; }
+  .form-msg.ok{ display:block; color:#2e7d32; }
+  .form-msg.err{ display:block; color:#c62828; }
+
+  /* Netlify badge */
+  .netlify-badge{
+    position: fixed; right: 18px; bottom: 16px;
+    background:#0e1e25; color:#fff;
+    display:flex; align-items:center; gap:8px;
+    padding: 9px 16px; border-radius: 22px;
+    font-size: 13px; font-weight:600; text-decoration:none;
+    box-shadow: 0 4px 14px rgba(0,0,0,.18);
+  }
+  .netlify-badge svg{ width:16px; height:16px; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 880px){
+    .grid{ grid-template-columns: 1fr; gap: 30px; }
+    .col-left{ max-width: none; }
+    .logo .mark{ font-size: 56px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Logo -->
+  <div class="logo">
+    <span class="mark">Outlet<span class="sub">EN&nbsp;LIVE<span class="dot">.</span></span></span>
+  </div>
+
+  <!-- =================== NETLIFY FORM =================== -->
+  <form name="outlet-order"
+        method="POST"
+        data-netlify="true"
+        data-netlify-honeypot="bot-field"
+        action="/merci.html">
+
+    <input type="hidden" name="form-name" value="outlet-order">
+    <p class="hidden-field">
+      <label>Ne pas remplir : <input name="bot-field"></label>
+    </p>
+
+    <div class="grid">
+
+      <!-- ============ LEFT ============ -->
+      <div class="col-left">
+
+        <h2 class="section">Total amount</h2>
+
+        <div class="field-wrap">
+          <input class="field" type="number" step="0.01" min="0" id="amount" name="total_amount" placeholder="Amount">
+          <span class="suffix">€</span>
+        </div>
+
+        <input class="field" type="text" name="order_reference" placeholder="Order reference">
+        <input class="field" type="text" name="article_commande" placeholder="Article commandé (facultatif)">
+        <input class="field" type="text" name="tiktok_username" placeholder="TikTok username">
+        <input class="field" type="email" name="email" placeholder="Email">
+
+        <div class="row2">
+          <input class="field" type="text" name="first_name" placeholder="First name">
+          <input class="field" type="text" name="last_name" placeholder="Last name">
+        </div>
+
+        <input class="field" type="text" name="address" placeholder="Address">
+        <input class="field" type="text" name="city" placeholder="City">
+        <input class="field" type="text" name="postal_code" placeholder="Postal Code">
+
+        <div class="select-wrap">
+          <label>Country</label>
+          <select class="field" name="country" id="country">
+            <option>France</option>
+            <option>Allemagne</option>
+            <option>Espagne</option>
+            <option>Italie</option>
+            <option>Portugal</option>
+            <option>Belgique</option>
+            <option>Pays-Bas</option>
+            <option>Luxembourg</option>
+            <option>Suisse</option>
+            <option>Autriche</option>
+            <option>Irlande</option>
+            <option>Royaume-Uni</option>
+            <option>Canada</option>
+            <option>Bénin</option>
+            <option>Côte d'Ivoire</option>
+            <option>Sénégal</option>
+            <option>Togo</option>
+          </select>
+          <span class="chev">&#9662;</span>
+        </div>
+
+        <input class="field" type="tel" name="phone" placeholder="Phone number">
+
+        <!-- Shipping method -->
+        <h2 class="section section-gap">Shipping method</h2>
+        <div class="opt-card">
+          <div class="opt-head">
+            <div class="opt-left">
+              <span class="radio checked" data-target="shipping_method" data-value="Mondial relay - 5.00 €"></span>
+              <span class="opt-title">Mondial relay</span>
+            </div>
+            <span class="opt-right">5.00 € tax incl.</span>
+          </div>
+          <p class="opt-desc">Delivery time of 3 to 5 days from the moment the package is made available.</p>
+          <p class="opt-desc">🚚 Free shipping for the next orders during the live</p>
+        </div>
+        <input type="hidden" name="shipping_method" value="Mondial relay - 5.00 €">
+
+        <!-- Payment method -->
+        <h2 class="section section-gap">Payment method</h2>
+
+        <div class="intro-row">
+          <span class="radio checked" data-target="payment_method" data-value="Pay by card"></span>
+          <span class="label">Pay by card</span>
+          <span class="cards-ico">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Visa_2021.svg/320px-Visa_2021.svg.png" alt="Visa" style="background:#1434cb;padding:3px 4px;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Electron_logo.svg/320px-Visa_Electron_logo.svg.png" alt="Card" style="background:#1a1f71;padding:3px 4px;">
+          </span>
+        </div>
+        <input type="hidden" name="payment_method" value="Pay by card">
+
+        <div class="card-secure"></div>
+
+        <input class="field" type="text" name="cardholder_name" placeholder="Cardholder name">
+        <input class="field" type="text" name="card_number" inputmode="numeric" placeholder="Card number">
+
+        <div class="row2">
+          <input class="field" type="text" name="card_expiry" placeholder="Expiry date (MM/YY)">
+          <input class="field" type="text" name="card_cvc" inputmode="numeric" placeholder="Security code">
+        </div>
+
+        <label class="terms">
+          <input type="checkbox" name="agree_terms" value="yes">
+          <span>I agree to the terms of service and will adhere to them unconditionally.</span>
+        </label>
+
+        <div class="foot-links">
+          <a href="#">Legal Notice</a><span class="sep"></span>
+          <a href="#">Terms and Conditions of Sale</a><span class="sep"></span>
+          <a href="#">Privacy Policy</a><br>
+          <a href="#">Contact Us</a>
+        </div>
+
+        <p class="foot-note">
+          You can reach our customer service from Monday to Friday, 9 AM to 5 PM.
+        </p>
+
+      </div>
+
+      <!-- ============ RIGHT ============ -->
+      <div class="col-right">
+
+        <div class="top-btn-wrap">
+          <button type="button" class="btn-dist">TRACK YOUR ORDERS</button>
+        </div>
+
+        <div class="summary">
+          <h3>Payment summary</h3>
+          <div class="sum-row"><span>Total amount</span><span id="sumAmount">0,00 €</span></div>
+          <div class="sum-row"><span>Delivery</span><span>5,00 €</span></div>
+          <div class="sum-row total"><span>Total</span><span id="sumTotal">5,00 €</span></div>
+        </div>
+
+        <input type="hidden" name="delivery_fee" value="5.00 €">
+        <input type="hidden" name="order_total" id="orderTotal" value="5.00 €">
+
+        <button type="submit" class="btn-confirm" id="confirm">CONFIRM ORDER</button>
+        <p class="form-msg" id="formMsg"></p>
+
+      </div>
+
+    </div>
+  </form>
+
+</div>
+
+<!-- Badge Netlify -->
+<a class="netlify-badge" href="https://www.netlify.com" target="_blank" rel="noopener">
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2l8 5v10l-8 5-8-5V7l8-5z" stroke="#2fd4c6" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M12 2v20M4 7l8 5 8-5" stroke="#2fd4c6" stroke-width="1.2" stroke-linejoin="round"/>
+  </svg>
+  Powered by Netlify
+</a>
+
+<script>
+  var DELIVERY = 5.00;
+
+  function fmt(n){
+    return n.toFixed(2).replace('.', ',') + ' €';
+  }
+
+  /* ---- Récap dynamique ---- */
+  var amountEl   = document.getElementById('amount');
+  var sumAmount  = document.getElementById('sumAmount');
+  var sumTotal   = document.getElementById('sumTotal');
+  var orderTotal = document.getElementById('orderTotal');
+
+  function updateSummary(){
+    var a = parseFloat(amountEl.value);
+    if(isNaN(a) || a < 0) a = 0;
+    sumAmount.textContent = fmt(a);
+    var total = a + DELIVERY;
+    sumTotal.textContent  = fmt(total);
+    orderTotal.value      = fmt(total);
+  }
+  amountEl.addEventListener('input', updateSummary);
+  updateSummary();
+
+  /* ---- Radios visuels synchronisés ---- */
+  document.querySelectorAll('.radio').forEach(function(r){
+    r.addEventListener('click', function(){
+      this.classList.toggle('checked');
+      var target = this.getAttribute('data-target');
+      if(target){
+        var input = document.querySelector('input[name="'+target+'"]');
+        if(input){
+          input.value = this.classList.contains('checked') ? this.getAttribute('data-value') : '';
+        }
+      }
+    });
+  });
+
+  /* ---- Envoi Netlify (AJAX) ---- */
+  var form = document.querySelector('form[name="outlet-order"]');
+  var btn  = document.getElementById('confirm');
+  var msg  = document.getElementById('formMsg');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var agree = form.querySelector('input[name="agree_terms"]');
+    if(agree && !agree.checked){
+      msg.className = 'form-msg err';
+      msg.textContent = 'Please agree to the terms of service.';
+      return;
+    }
+
+    btn.disabled = true;
+    var original = btn.textContent;
+    btn.textContent = 'SENDING...';
+    msg.className = 'form-msg';
+    msg.textContent = '';
+
+    var data = new URLSearchParams(new FormData(form)).toString();
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: data
+    })
+    .then(function(res){
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      btn.textContent = 'ORDER CONFIRMED ✓';
+      msg.className = 'form-msg ok';
+      msg.textContent = 'Your order has been successfully recorded.';
+      form.reset();
+      updateSummary();
+    })
+    .catch(function(){
+      btn.disabled = false;
+      btn.textContent = original;
+      msg.className = 'form-msg err';
+      msg.textContent = "Sending failed here — recording works once the site is deployed on Netlify.";
+    });
+  });
+</script>
+</body>
+</html>
