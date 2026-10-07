@@ -6,7 +6,7 @@
 <title>Thank you — Outlet en Live</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   body{
@@ -17,35 +17,75 @@
     align-items:center; justify-content:center;
     text-align:center; padding:40px 20px;
   }
-  .mark{ font-family:'Dancing Script',cursive; font-size:64px; color:#0c0c0c; line-height:1; }
-  .sub{ font-weight:600; font-size:11px; letter-spacing:6px; margin:-4px 0 40px 36px; }
-  .sub .dot{ color:#ff4500; }
+  .logo-img{ width:200px; max-width:60%; height:auto; margin-bottom:34px; }
+
+  .card{
+    background:#fff; border-radius:22px;
+    box-shadow:0 10px 40px rgba(0,0,0,.06);
+    padding:40px 36px; max-width:520px; width:100%;
+  }
   .check{
     width:84px; height:84px; border-radius:50%;
-    background:#2e7d32; color:#fff;
+    background:#d9f2df; color:#2e7d32;
     display:flex; align-items:center; justify-content:center;
-    font-size:44px; margin-bottom:24px;
+    font-size:40px; margin:0 auto 22px;
   }
-  h1{ font-size:28px; font-weight:800; margin-bottom:12px; }
-  p{ font-size:16px; color:#555; max-width:460px; line-height:1.5; margin-bottom:28px; }
-  .btns{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
-  a.btn{
-    text-decoration:none; padding:16px 28px; border-radius:12px;
-    font-weight:700; font-size:14px; letter-spacing:.5px;
+  h1{ font-size:27px; font-weight:800; margin-bottom:12px; }
+  .lead{ font-size:15px; color:#555; max-width:380px; margin:0 auto 28px; line-height:1.55; }
+
+  .summary{
+    background:#f1efe8; border-radius:14px;
+    padding:22px 22px 10px; text-align:left; margin-bottom:26px;
   }
-  a.btn.dark{ background:#0c0c0c; color:#fff; }
-  a.btn.light{ background:#fff; color:#1b1b2b; box-shadow:0 2px 10px rgba(0,0,0,.06); }
+  .sum-row{ display:flex; justify-content:space-between; align-items:center;
+    font-size:15px; padding:9px 0; color:#555; }
+  .sum-row .val{ color:#1b1b2b; font-weight:600; }
+  .sum-row.ref .val{ font-weight:800; }
+  .sum-row.total{ border-top:1px solid #ddd9cd; margin-top:6px; padding-top:16px; }
+  .sum-row.total span:first-child{ color:#1b1b2b; }
+  .sum-row.total .val{ font-weight:800; font-size:16px; }
+
+  .btn{
+    display:block; text-decoration:none; width:100%;
+    padding:17px; border-radius:12px; font-weight:700;
+    font-size:14px; letter-spacing:.5px; margin-top:12px; text-align:center;
+  }
+  .btn.dark{ background:#0c0c0c; color:#fff; }
+  .btn.dark:hover{ background:#232323; }
+  .btn.light{ background:#fff; color:#1b1b2b; border:1px solid #e2e0d6; }
+  .btn.light:hover{ background:#faf9f5; }
+
+  .foot{ margin-top:30px; font-size:13px; color:#8a8575; }
 </style>
 </head>
 <body>
-  <span class="mark">Outlet</span>
-  <span class="sub">EN&nbsp;LIVE<span class="dot">.</span></span>
-  <div class="check">&#10003;</div>
-  <h1>Thank you for your order!</h1>
-  <p>Your order has been successfully recorded. Our customer service will get back to you from Monday to Friday, 9 AM to 5 PM.</p>
-  <div class="btns">
-    <a class="btn dark" href="track.html">Track my order</a>
-    <a class="btn light" href="/">Back to home</a>
+  <img class="logo-img" src="logo.png" alt="Outlet en Live" width="900" height="380">
+
+  <div class="card">
+    <div class="check">&#10003;</div>
+    <h1>Thank you for your order!</h1>
+    <p class="lead">Your payment has been confirmed. A confirmation has been sent to your email.</p>
+
+    <div class="summary">
+      <div class="sum-row ref"><span>Order reference</span><span class="val" id="ref">—</span></div>
+      <div class="sum-row"><span>Date</span><span class="val" id="date">—</span></div>
+      <div class="sum-row"><span>Carrier</span><span class="val" id="carrier">Mondial relay</span></div>
+      <div class="sum-row total"><span>Total paid</span><span class="val" id="total">—</span></div>
+    </div>
+
+    <a class="btn dark" href="track.html">TRACK YOUR ORDERS</a>
+    <a class="btn light" href="/">BACK TO SHOP</a>
   </div>
+
+  <p class="foot">You can reach our customer service from Monday to Friday, 9 AM to 5 PM.</p>
+
+<script>
+  var q = new URLSearchParams(location.search);
+  function set(id, v){ if(v){ document.getElementById(id).textContent = v; } }
+  set('ref', q.get('ref'));
+  set('date', q.get('date'));
+  set('carrier', q.get('carrier'));
+  set('total', q.get('total'));
+</script>
 </body>
 </html>

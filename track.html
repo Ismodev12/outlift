@@ -6,135 +6,108 @@
 <title>Track your orders — Outlet en Live</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
-  :root{
-    --bg:#eceae2; --field-bg:#fff; --text:#1b1b2b; --muted:#9a9a9a;
-    --placeholder:#b4b4b4; --brown:#96835e;
-    --shadow:0 2px 10px rgba(0,0,0,.05); --radius:14px;
+  :root{ --bg:#eceae2; --text:#1b1b2b; --brown:#96835e; }
+  body{ font-family:'Poppins',sans-serif; background:#fff; color:var(--text); min-height:100vh; }
+
+  /* ---------- Header band ---------- */
+  .topbar{
+    background:var(--bg); padding:26px 40px;
+    display:flex; align-items:center; justify-content:center; position:relative;
   }
-  body{
-    font-family:'Poppins',sans-serif; background:var(--bg); color:var(--text);
-    min-height:100vh; padding:36px 20px 70px;
+  .topbar img{ width:170px; max-width:46vw; height:auto; display:block; }
+  .return-btn{
+    position:absolute; right:40px; top:50%; transform:translateY(-50%);
+    background:#0c0c0c; color:#fff; text-decoration:none;
+    padding:13px 26px; border-radius:12px; font-weight:700;
+    font-size:13px; letter-spacing:.5px;
   }
-  .wrap{ max-width:640px; margin:0 auto; }
+  .return-btn:hover{ background:#232323; }
 
-  .logo{ text-align:center; margin-bottom:34px; }
-  .logo .mark{ font-family:'Dancing Script',cursive; font-size:64px; color:#0c0c0c; line-height:1; display:inline-block; }
-  .logo .sub{ display:block; font-weight:600; font-size:11px; letter-spacing:6px; margin-top:-4px; margin-left:36px; }
-  .logo .sub .dot{ color:#ff4500; }
+  /* ---------- Content ---------- */
+  .wrap{ max-width:1180px; margin:0 auto; padding:56px 20px 80px; }
+  h1{ text-align:center; font-size:30px; font-weight:800; margin-bottom:26px; }
+  .note{ color:var(--brown); font-size:15px; margin-bottom:28px; }
 
-  .back{ display:inline-block; margin-bottom:18px; text-decoration:none; color:var(--text); font-size:14px; font-weight:600; }
-  .back:hover{ text-decoration:underline; }
-
-  h1{ font-size:28px; font-weight:800; margin-bottom:8px; }
-  .lead{ color:#555; font-size:15px; margin-bottom:24px; line-height:1.5; }
-
-  .card{ background:var(--field-bg); border-radius:16px; box-shadow:var(--shadow); padding:26px; }
-
-  .field{
-    width:100%; background:var(--bg); border:1px solid #e2e0d6; border-radius:var(--radius);
-    padding:16px 18px; font-family:'Poppins',sans-serif; font-size:15px; color:var(--text);
-    margin-bottom:14px; outline:none;
+  .table-wrap{ overflow-x:auto; }
+  table{ width:100%; border-collapse:separate; border-spacing:0; font-size:15px; }
+  thead th{
+    background:#0c0c0c; color:#fff; text-align:left; font-weight:700;
+    padding:18px 24px; font-size:15px;
   }
-  .field::placeholder{ color:var(--placeholder); }
-  .field:focus{ border-color:#111; }
-
-  .btn{
-    width:100%; background:#0c0c0c; color:#fff; border:none; border-radius:12px;
-    padding:17px; font-family:'Poppins',sans-serif; font-weight:700; font-size:14px;
-    letter-spacing:.5px; cursor:pointer; margin-top:4px;
+  thead th:first-child{ border-top-left-radius:10px; border-bottom-left-radius:10px; }
+  thead th:last-child{ border-top-right-radius:10px; border-bottom-right-radius:10px; text-align:center; }
+  tbody td{ padding:22px 24px; border-bottom:1px solid #eee; color:#333; }
+  tbody td:first-child{ font-weight:700; color:#1b1b2b; }
+  tbody td.carrier{ color:var(--brown); }
+  tbody td.status{ text-align:center; }
+  .badge{
+    display:inline-block; background:#d9f2df; color:#2e7d32;
+    font-weight:700; font-size:13px; padding:6px 16px; border-radius:20px;
   }
-  .btn:hover{ background:#232323; }
+  .empty{ text-align:center; color:#999; padding:50px 20px; font-size:15px; }
 
-  /* Result */
-  .result{ display:none; margin-top:26px; }
-  .result.show{ display:block; }
-  .result h2{ font-size:18px; font-weight:800; margin-bottom:4px; }
-  .result .ref{ color:var(--brown); font-size:14px; margin-bottom:22px; }
-
-  .timeline{ list-style:none; position:relative; padding-left:34px; }
-  .timeline::before{
-    content:""; position:absolute; left:11px; top:6px; bottom:6px; width:2px; background:#e2e0d6;
+  @media (max-width:640px){
+    .topbar{ padding:22px 20px; }
+    .return-btn{ right:20px; padding:11px 18px; }
+    h1{ font-size:24px; }
   }
-  .step{ position:relative; padding-bottom:22px; }
-  .step:last-child{ padding-bottom:0; }
-  .step .dot{
-    position:absolute; left:-29px; top:1px; width:24px; height:24px; border-radius:50%;
-    background:#fff; border:2px solid #cfcabc; display:flex; align-items:center; justify-content:center;
-    font-size:12px; color:#cfcabc;
-  }
-  .step.done .dot{ background:#2e7d32; border-color:#2e7d32; color:#fff; }
-  .step.current .dot{ background:#0c0c0c; border-color:#0c0c0c; color:#fff; }
-  .step .title{ font-weight:700; font-size:15px; }
-  .step .desc{ font-size:13px; color:#777; margin-top:2px; }
-
-  .note{ margin-top:22px; font-size:13px; color:#888; line-height:1.5; }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <div class="logo">
-    <span class="mark">Outlet<span class="sub">EN&nbsp;LIVE<span class="dot">.</span></span></span>
+  <div class="topbar">
+    <img src="logo.png" alt="Outlet en Live">
+    <a class="return-btn" href="/">RETURN</a>
   </div>
 
-  <a class="back" href="/">&#8592; Back to the shop</a>
+  <div class="wrap">
+    <h1>YOUR ORDERS</h1>
+    <p class="note">* Only orders placed from your current device are displayed here.</p>
 
-  <h1>Order tracking</h1>
-  <p class="lead">Enter your order reference and the email used at checkout to see your package status.</p>
-
-  <div class="card">
-    <form id="trackForm">
-      <input class="field" type="text" id="ref" placeholder="Order reference" required>
-      <input class="field" type="email" id="mail" placeholder="Email address" required>
-      <button class="btn" type="submit">TRACK MY ORDER</button>
-    </form>
-
-    <div class="result" id="result">
-      <h2>Order being processed</h2>
-      <div class="ref" id="refEcho"></div>
-      <ul class="timeline">
-        <li class="step done">
-          <span class="dot">&#10003;</span>
-          <div class="title">Order received</div>
-          <div class="desc">We have received your order.</div>
-        </li>
-        <li class="step current">
-          <span class="dot">&#9679;</span>
-          <div class="title">Being prepared</div>
-          <div class="desc">Your package is being prepared.</div>
-        </li>
-        <li class="step">
-          <span class="dot"></span>
-          <div class="title">Shipped — Mondial Relay</div>
-          <div class="desc">Estimated delivery within 3 to 5 days.</div>
-        </li>
-        <li class="step">
-          <span class="dot"></span>
-          <div class="title">Delivered</div>
-          <div class="desc">Package available at the pickup point.</div>
-        </li>
-      </ul>
-      <p class="note">For any question, contact our customer service from Monday to Friday, 9 AM to 5 PM.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Reference</th>
+            <th>Date</th>
+            <th>Total price</th>
+            <th>Carrier</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
     </div>
+    <p class="empty" id="empty" style="display:none;">You have not placed any orders from this device yet.</p>
   </div>
-
-</div>
 
 <script>
-  var form = document.getElementById('trackForm');
-  var result = document.getElementById('result');
-  var refEcho = document.getElementById('refEcho');
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    var ref = document.getElementById('ref').value.trim();
-    refEcho.textContent = 'Reference: ' + ref;
-    result.classList.add('show');
-    result.scrollIntoView({ behavior:'smooth', block:'start' });
-  });
+  var orders = [];
+  try{ orders = JSON.parse(localStorage.getItem('outlet_orders') || '[]'); }catch(e){ orders = []; }
+
+  var rows = document.getElementById('rows');
+  var empty = document.getElementById('empty');
+
+  if(!orders.length){
+    document.querySelector('.table-wrap').style.display = 'none';
+    empty.style.display = 'block';
+  } else {
+    rows.innerHTML = orders.map(function(o){
+      return '<tr>'
+        + '<td>' + esc(o.ref) + '</td>'
+        + '<td>' + esc(o.date) + '</td>'
+        + '<td>' + esc(o.total) + '</td>'
+        + '<td class="carrier">' + esc(o.carrier || 'Mondial relay') + '</td>'
+        + '<td class="status"><span class="badge">' + esc(o.status || 'Paid') + '</span></td>'
+        + '</tr>';
+    }).join('');
+  }
 </script>
 </body>
 </html>

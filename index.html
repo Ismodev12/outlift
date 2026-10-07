@@ -62,6 +62,7 @@
     margin-left: 40px;
   }
   .logo .sub .dot{ color:#ff4500; }
+  .logo img{ width:240px; max-width:70%; height:auto; display:inline-block; }
 
   /* ---------- Layout ---------- */
   .grid{
@@ -238,7 +239,7 @@
 
   <!-- Logo -->
   <div class="logo">
-    <span class="mark">Outlet<span class="sub">EN&nbsp;LIVE<span class="dot">.</span></span></span>
+    <img src="logo.png" alt="Outlet en Live" width="900" height="380">
   </div>
 
   <!-- =================== NETLIFY FORM =================== -->
@@ -455,8 +456,27 @@
     })
     .then(function(res){
       if(!res.ok) throw new Error('HTTP ' + res.status);
-      // Order recorded -> show the thank-you page
-      window.location.href = '/thank-you.html';
+      // Save the order locally (this device) and go to the thank-you page
+      var g = function(n){ var el = form.querySelector('[name="'+n+'"]'); return el ? el.value.trim() : ''; };
+      var d = new Date(), p = function(x){ return (x<10?'0':'')+x; };
+      var dateStr = p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear()+' '+p(d.getHours())+':'+p(d.getMinutes());
+      var order = {
+        ref: g('order_reference') || '—',
+        date: dateStr,
+        total: (document.getElementById('orderTotal') || {}).value || '',
+        carrier: 'Mondial relay',
+        status: 'Paid'
+      };
+      try{
+        var list = JSON.parse(localStorage.getItem('outlet_orders') || '[]');
+        list.unshift(order);
+        localStorage.setItem('outlet_orders', JSON.stringify(list));
+      }catch(e){}
+      var q = '?ref='+encodeURIComponent(order.ref)
+            + '&date='+encodeURIComponent(order.date)
+            + '&total='+encodeURIComponent(order.total)
+            + '&carrier='+encodeURIComponent(order.carrier);
+      window.location.href = '/thank-you.html' + q;
     })
     .catch(function(){
       btn.disabled = false;
