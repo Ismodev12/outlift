@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -201,6 +201,7 @@
     padding: 14px 22px; font-family:'Poppins',sans-serif;
     font-weight:700; font-size: 12px; letter-spacing:.5px; cursor:pointer;
   }
+  .btn-link{ display:inline-block; text-decoration:none; }
 
   .summary{
     background:#fff; border-radius: 16px; box-shadow: var(--shadow);
@@ -256,11 +257,11 @@
         method="POST"
         data-netlify="true"
         data-netlify-honeypot="bot-field"
-        action="/merci.html">
+        action="/thank-you.html">
 
     <input type="hidden" name="form-name" value="outlet-order">
     <p class="hidden-field">
-      <label>Ne pas remplir : <input name="bot-field"></label>
+      <label>Do not fill this out: <input name="bot-field"></label>
     </p>
 
     <div class="grid">
@@ -276,7 +277,7 @@
         </div>
 
         <input class="field" type="text" name="order_reference" placeholder="Order reference">
-        <input class="field" type="text" name="article_commande" placeholder="Article commandé (facultatif)">
+        <input class="field" type="text" name="ordered_item" placeholder="Ordered item (optional)">
         <input class="field" type="text" name="tiktok_username" placeholder="TikTok username">
         <input class="field" type="email" name="email" placeholder="Email">
 
@@ -293,21 +294,21 @@
           <label>Country</label>
           <select class="field" name="country" id="country">
             <option>France</option>
-            <option>Allemagne</option>
-            <option>Espagne</option>
-            <option>Italie</option>
+            <option>Germany</option>
+            <option>Spain</option>
+            <option>Italy</option>
             <option>Portugal</option>
-            <option>Belgique</option>
-            <option>Pays-Bas</option>
+            <option>Belgium</option>
+            <option>Netherlands</option>
             <option>Luxembourg</option>
-            <option>Suisse</option>
-            <option>Autriche</option>
-            <option>Irlande</option>
-            <option>Royaume-Uni</option>
+            <option>Switzerland</option>
+            <option>Austria</option>
+            <option>Ireland</option>
+            <option>United Kingdom</option>
             <option>Canada</option>
-            <option>Bénin</option>
-            <option>Côte d'Ivoire</option>
-            <option>Sénégal</option>
+            <option>Benin</option>
+            <option>Ivory Coast</option>
+            <option>Senegal</option>
             <option>Togo</option>
           </select>
           <span class="chev">&#9662;</span>
@@ -374,7 +375,7 @@
       <div class="col-right">
 
         <div class="top-btn-wrap">
-          <button type="button" class="btn-dist">TRACK YOUR ORDERS</button>
+          <a href="track.html" class="btn-dist btn-link">TRACK YOUR ORDERS</a>
         </div>
 
         <div class="summary">
@@ -474,11 +475,8 @@
     })
     .then(function(res){
       if(!res.ok) throw new Error('HTTP ' + res.status);
-      btn.textContent = 'ORDER CONFIRMED ✓';
-      msg.className = 'form-msg ok';
-      msg.textContent = 'Your order has been successfully recorded.';
-      form.reset();
-      updateSummary();
+      // Order recorded -> show the thank-you page
+      window.location.href = '/thank-you.html';
     })
     .catch(function(){
       btn.disabled = false;
